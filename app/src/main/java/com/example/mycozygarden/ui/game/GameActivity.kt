@@ -14,7 +14,6 @@ import com.example.mycozygarden.databinding.ActivityGameBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-// Определение класса данных грядки – только здесь, не дублируется
 data class GardenBedData(
     val index: Int,
     var cropType: String?,
@@ -77,11 +76,12 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showPlantDialog(bedIndex: Int) {
-        val cropNames = Crop.all.map { "${it.name} (${it.priceToPlant} монет)" }.toTypedArray()
+        val sortedCrops = Crop.all.sortedBy { it.priceToPlant }
+        val cropNames = sortedCrops.map { "${it.name} (${it.priceToPlant} монет)" }.toTypedArray()
         AlertDialog.Builder(this)
             .setTitle("Выберите культуру")
             .setItems(cropNames) { _, which ->
-                val selectedCrop = Crop.all[which]
+                val selectedCrop = sortedCrops[which]
                 if (coins >= selectedCrop.priceToPlant) {
                     coins -= selectedCrop.priceToPlant
                     beds[bedIndex].cropType = selectedCrop.type.name
