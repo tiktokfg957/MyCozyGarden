@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mycozygarden.databinding.ActivityMainBinding
 import com.example.mycozygarden.ui.game.GameActivity
+import com.example.mycozygarden.ui.settings.SettingsActivity
+import com.example.mycozygarden.ui.shop.ShopActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,10 +22,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, GameActivity::class.java))
         }
         binding.btnSettings.setOnClickListener {
-            Toast.makeText(this, "Настройки будут позже", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
         binding.btnShop.setOnClickListener {
-            Toast.makeText(this, "Магазин будет позже", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ShopActivity::class.java))
         }
         binding.btnExit.setOnClickListener {
             finishAffinity()
