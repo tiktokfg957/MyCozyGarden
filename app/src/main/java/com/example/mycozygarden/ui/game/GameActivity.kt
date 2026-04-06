@@ -35,7 +35,6 @@ class GameActivity : AppCompatActivity() {
             saveCoins()
         }
 
-    // Статус улучшений
     private var scarecrowOwned = false
     private var tractorOwned = false
     private var autoWaterOwned = false
@@ -178,7 +177,6 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    // Диалог магазина улучшений
     private fun showShopDialog() {
         val upgrades = listOf(
             Triple("Пугало", "Увеличивает доход на 20%", 500),
