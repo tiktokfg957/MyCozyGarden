@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#5D4037">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#3E2723"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Громкость музыки"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp" />
+
+    <SeekBar
+        android:id="@+id/sbMusic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Громкость звуков"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp" />
+
+    <SeekBar
+        android:id="@+id/sbSound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100" />
+
+    <CheckBox
+        android:id="@+id/cbVibration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Вибрация при сборе урожая"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/btnResetProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сбросить прогресс"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#E74C3C" />
+
+</LinearLayout>
