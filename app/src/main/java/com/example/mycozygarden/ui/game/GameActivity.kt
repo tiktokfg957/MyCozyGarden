@@ -93,7 +93,6 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showPlantDialog(bedIndex: Int) {
-        // Сортируем культуры по возрастанию цены
         val sortedCrops = Crop.all.sortedBy { it.priceToPlant }
         val cropNames = sortedCrops.map { "${it.name} (${it.priceToPlant} монет)" }.toTypedArray()
         AlertDialog.Builder(this)
@@ -162,7 +161,7 @@ class GameActivity : AppCompatActivity() {
         if (!autoWaterOwned) return
         lifecycleScope.launch {
             while (true) {
-                delay(10000L) // каждые 10 секунд
+                delay(10000L)
                 val nonFullBeds = beds.filter { it.cropType != null && it.progress < 1f }
                 if (nonFullBeds.isNotEmpty()) {
                     val randomBed = nonFullBeds.random()
@@ -179,7 +178,56 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    // Диалог магазина улучшений
+    private fun showShopDialog() {
+        val upgrades = listOf(
+            Triple("Пугало", "Увеличивает доход на 20%", 500),
+            Triple("Трактор", "Увеличивает силу клика", 800),
+            Triple("Поливалка", "Автополив раз в 10 сек", 600)
+        )
+        val items = upgrades.mapIndexed { index, (name, desc, price) ->
+            val owned = when (index) {
+                0 -> scarecrowOwned
+                1 -> tractorOwned
+                2 -> autoWaterOwned
+                else -> false
+            }
+            "${name} - ${desc} (${price} монет)" + if (owned) " [Куплено]" else ""
+        }.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle("Магазин улучшений")
+            .setItems(items) { _, which ->
+                when (which) {
+                    0 -> buyUpgrade("scarecrow", 500) { scarecrowOwned = true }
+                    1 -> buyUpgrade("tractor", 800) { tractorOwned = true }
+                    2 -> buyUpgrade("auto_water", 600) { autoWaterOwned = true }
+                }
+            }
+            .setNegativeButton("Закрыть", null)
+            .show()
+    }
+
+    private fun buyUpgrade(key: String, price: Int, onSuccess: () -> Unit) {
+        val alreadyOwned = prefs.getBoolean("upgrade_$key", false)
+        if (alreadyOwned) {
+            Toast.makeText(this, "Улучшение уже куплено", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (coins >= price) {
+            coins -= price
+            prefs.edit().putBoolean("upgrade_$key", true).apply()
+            onSuccess()
+            Toast.makeText(this, "Улучшение куплено!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Недостаточно монет", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun setupListeners() {
+        binding.btnShop.setOnClickListener {
+            showShopDialog()
+        }
         binding.btnBackToMenu.setOnClickListener {
             finish()
         }
