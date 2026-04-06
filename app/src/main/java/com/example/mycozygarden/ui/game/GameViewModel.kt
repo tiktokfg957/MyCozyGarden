@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.mycozygarden.data.model.Achievement
 import com.example.mycozygarden.data.model.Crop
 import com.example.mycozygarden.data.model.CropType
 import com.example.mycozygarden.data.model.GameState
