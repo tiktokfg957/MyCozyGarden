@@ -2,6 +2,8 @@ package com.example.mycozygarden.ui.game
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -177,31 +179,48 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    // Красивый кастомный диалог магазина
     private fun showShopDialog() {
-        val upgrades = listOf(
-            Triple("Пугало", "Увеличивает доход на 20%", 500),
-            Triple("Трактор", "Увеличивает силу клика", 800),
-            Triple("Поливалка", "Автополив раз в 10 сек", 600)
-        )
-        val items = upgrades.mapIndexed { index, (name, desc, price) ->
-            val owned = when (index) {
-                0 -> scarecrowOwned
-                1 -> tractorOwned
-                2 -> autoWaterOwned
-                else -> false
+        val dialogView = layoutInflater.inflate(R.layout.dialog_shop, null)
+        val tvPriceScarecrow = dialogView.findViewById<TextView>(R.id.tvPriceScarecrow)
+        val tvPriceTractor = dialogView.findViewById<TextView>(R.id.tvPriceTractor)
+        val tvPriceAutoWater = dialogView.findViewById<TextView>(R.id.tvPriceAutoWater)
+        val btnBuyScarecrow = dialogView.findViewById<Button>(R.id.btnBuyScarecrow)
+        val btnBuyTractor = dialogView.findViewById<Button>(R.id.btnBuyTractor)
+        val btnBuyAutoWater = dialogView.findViewById<Button>(R.id.btnBuyAutoWater)
+
+        // Обновляем цены и состояние кнопок
+        tvPriceScarecrow.text = if (scarecrowOwned) "Куплено" else "500"
+        tvPriceTractor.text = if (tractorOwned) "Куплено" else "800"
+        tvPriceAutoWater.text = if (autoWaterOwned) "Куплено" else "600"
+        btnBuyScarecrow.isEnabled = !scarecrowOwned
+        btnBuyTractor.isEnabled = !tractorOwned
+        btnBuyAutoWater.isEnabled = !autoWaterOwned
+
+        btnBuyScarecrow.setOnClickListener {
+            buyUpgrade("scarecrow", 500) {
+                scarecrowOwned = true
+                tvPriceScarecrow.text = "Куплено"
+                btnBuyScarecrow.isEnabled = false
             }
-            "${name} - ${desc} (${price} монет)" + if (owned) " [Куплено]" else ""
-        }.toTypedArray()
+        }
+        btnBuyTractor.setOnClickListener {
+            buyUpgrade("tractor", 800) {
+                tractorOwned = true
+                tvPriceTractor.text = "Куплено"
+                btnBuyTractor.isEnabled = false
+            }
+        }
+        btnBuyAutoWater.setOnClickListener {
+            buyUpgrade("auto_water", 600) {
+                autoWaterOwned = true
+                tvPriceAutoWater.text = "Куплено"
+                btnBuyAutoWater.isEnabled = false
+            }
+        }
 
         AlertDialog.Builder(this)
-            .setTitle("Магазин улучшений")
-            .setItems(items) { _, which ->
-                when (which) {
-                    0 -> buyUpgrade("scarecrow", 500) { scarecrowOwned = true }
-                    1 -> buyUpgrade("tractor", 800) { tractorOwned = true }
-                    2 -> buyUpgrade("auto_water", 600) { autoWaterOwned = true }
-                }
-            }
+            .setView(dialogView)
             .setNegativeButton("Закрыть", null)
             .show()
     }
