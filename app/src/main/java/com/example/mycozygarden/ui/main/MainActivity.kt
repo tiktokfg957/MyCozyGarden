@@ -2,7 +2,7 @@ package com.example.mycozygarden.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mycozygarden.databinding.ActivityMainBinding
 import com.example.mycozygarden.ui.game.GameActivity
@@ -32,7 +32,12 @@ class MainActivity : AppCompatActivity() {
                 finishAffinity()
             }
         } catch (e: Exception) {
-            Toast.makeText(this, "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
+            // Показываем ошибку на экране
+            val errorTextView = TextView(this)
+            errorTextView.text = "Ошибка при запуске:\n${e.message}\n\n${e.stackTrace.joinToString("\n")}"
+            errorTextView.setTextColor(0xFFFF0000.toInt())
+            errorTextView.setPadding(32, 32, 32, 32)
+            setContentView(errorTextView)
             e.printStackTrace()
         }
     }
