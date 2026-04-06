@@ -3,10 +3,10 @@
     <application
         android:allowBackup="true"
         android:icon="@android:drawable/ic_dialog_info"
-        android:label="Test App"
+        android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
