@@ -10,11 +10,11 @@
     android:focusable="true">
 
     <ImageView
-        android:id="@+id/ivPlant"
+        android:id="@+id/ivCrop"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        android:scaleType="fitCenter" />
+        android:src="@drawable/empty_plot" />
 
     <ProgressBar
         android:id="@+id/progressBar"
