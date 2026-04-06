@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="#5D4037">
 
-    <!-- Верхняя панель с монетами -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +38,6 @@
         android:layout_weight="1"
         android:padding="8dp" />
 
-    <!-- Нижняя панель с двумя кнопками -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
