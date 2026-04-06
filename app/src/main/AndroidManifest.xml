@@ -1,31 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_launcher"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.MyCozyGarden"
-        android:name=".MyApplication">
+        android:icon="@android:drawable/ic_dialog_info"
+        android:label="Test App"
+        android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.game.GameActivity" />
-        <activity android:name=".ui.shop.ShopActivity" />
-        <activity android:name=".ui.upgrades.UpgradesActivity" />
-        <activity android:name=".ui.achievements.AchievementsActivity" />
-        <activity android:name=".ui.settings.SettingsActivity" />
     </application>
-
 </manifest>
