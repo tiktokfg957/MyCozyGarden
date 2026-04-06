@@ -10,6 +10,8 @@
     <string name="plant">Посадить</string>
     <string name="upgrades">Улучшения</string>
     <string name="achievements">Достижения</string>
+
+    <!-- Названия культур -->
     <string name="potato">Картофель</string>
     <string name="tomato">Помидор</string>
     <string name="sunflower">Подсолнух</string>
