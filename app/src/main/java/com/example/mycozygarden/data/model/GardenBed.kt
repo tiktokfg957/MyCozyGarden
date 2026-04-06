@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class GardenBed(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val index: Int,
+    val bedIndex: Int,
     var cropType: String?,
     var progress: Float,
     var lastUpdateTime: Long
