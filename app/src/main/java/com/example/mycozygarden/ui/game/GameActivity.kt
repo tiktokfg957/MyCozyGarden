@@ -6,12 +6,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.mycozygarden.MyApplication
 import com.example.mycozygarden.databinding.ActivityGameBinding
 import com.example.mycozygarden.ui.achievements.AchievementsActivity
 import com.example.mycozygarden.ui.settings.SettingsActivity
 import com.example.mycozygarden.ui.shop.ShopActivity
 import com.example.mycozygarden.ui.upgrades.UpgradesActivity
-import com.example.mycozygarden.MyApplication
 
 class GameActivity : AppCompatActivity() {
 
@@ -23,13 +23,19 @@ class GameActivity : AppCompatActivity() {
     private lateinit var adapter: GardenAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityGameBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        try {
+            super.onCreate(savedInstanceState)
+            binding = ActivityGameBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        setupRecyclerView()
-        observeData()
-        setupListeners()
+            setupRecyclerView()
+            observeData()
+            setupListeners()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+            finish()
+        }
     }
 
     private fun setupRecyclerView() {
@@ -53,7 +59,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnPlant.setOnClickListener {
-            Toast.makeText(this, "Посадка пока не реализована", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Посадка в разработке", Toast.LENGTH_SHORT).show()
         }
         binding.btnUpgrades.setOnClickListener {
             startActivity(Intent(this, UpgradesActivity::class.java))
