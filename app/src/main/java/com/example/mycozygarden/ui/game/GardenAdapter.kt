@@ -3,6 +3,8 @@ package com.example.mycozygarden.ui.game
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mycozygarden.data.model.Crop
+import com.example.mycozygarden.data.model.CropType
 import com.example.mycozygarden.databinding.ItemGardenBedBinding
 
 class GardenAdapter(
@@ -25,7 +27,7 @@ class GardenAdapter(
     inner class ViewHolder(private val binding: ItemGardenBedBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(bed: GardenBedData, position: Int) {
             val cropName = if (bed.cropType != null) {
-                CropType.valueOf(bed.cropType!!).let { Crop.getByType(it).name }
+                Crop.getByType(CropType.valueOf(bed.cropType!!)).name
             } else "Пусто"
             binding.tvCropName.text = cropName
             val progressPercent = (bed.progress * 100).toInt()
