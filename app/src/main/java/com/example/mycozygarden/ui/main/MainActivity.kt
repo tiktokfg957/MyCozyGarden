@@ -23,9 +23,6 @@ class MainActivity : AppCompatActivity() {
         binding.btnSettings.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
-        binding.btnShop.setOnClickListener {
-            Toast.makeText(this, "Магазин открывается в игре", Toast.LENGTH_SHORT).show()
-        }
         binding.btnExit.setOnClickListener {
             finishAffinity()
         }
