@@ -3,6 +3,7 @@ package com.example.mycozygarden.ui.game
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mycozygarden.R
 import com.example.mycozygarden.data.model.Crop
 import com.example.mycozygarden.data.model.CropType
 import com.example.mycozygarden.databinding.ItemGardenBedBinding
@@ -26,10 +27,19 @@ class GardenAdapter(
 
     inner class ViewHolder(private val binding: ItemGardenBedBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(bed: GardenBedData, position: Int) {
-            val cropName = if (bed.cropType != null) {
-                Crop.getByType(CropType.valueOf(bed.cropType!!)).name
-            } else "Пусто"
-            binding.tvCropName.text = cropName
+            // Получаем ресурс картинки для растения или показываем заглушку
+            val cropResId = if (bed.cropType != null) {
+                getImageForCrop(bed.cropType)
+            } else {
+                R.drawable.empty_plot // или 0, тогда скроем ImageView
+            }
+            if (cropResId != 0) {
+                binding.ivPlant.setImageResource(cropResId)
+                binding.ivPlant.visibility = android.view.View.VISIBLE
+            } else {
+                binding.ivPlant.visibility = android.view.View.GONE
+            }
+
             val progressPercent = (bed.progress * 100).toInt()
             binding.progressBar.progress = progressPercent
             val isReady = bed.cropType != null && bed.progress >= 1f
@@ -40,6 +50,23 @@ class GardenAdapter(
             }
             binding.btnHarvest.setOnClickListener {
                 onHarvestClick(position)
+            }
+        }
+
+        private fun getImageForCrop(cropTypeStr: String): Int {
+            return when (cropTypeStr) {
+                CropType.POTATO.name -> R.drawable.potato
+                CropType.TOMATO.name -> R.drawable.tomato
+                CropType.SUNFLOWER.name -> R.drawable.sunflower
+                CropType.STRAWBERRY.name -> R.drawable.strawberry
+                CropType.PUMPKIN.name -> R.drawable.pumpkin
+                CropType.CORN.name -> R.drawable.corn
+                CropType.PEPPER.name -> R.drawable.pepper
+                // Новые культуры, если добавите
+                "CARROT" -> R.drawable.carrot
+                "WHEAT" -> R.drawable.wheat
+                "RADISH" -> R.drawable.radish
+                else -> 0
             }
         }
     }
