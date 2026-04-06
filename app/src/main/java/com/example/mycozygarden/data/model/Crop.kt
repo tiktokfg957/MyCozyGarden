@@ -1,7 +1,7 @@
 package com.example.mycozygarden.data.model
 
 enum class CropType {
-    POTATO, TOMATO, SUNFLOWER, STRAWBERRY, PUMPKIN, CORN, PEPPER
+    POTATO, TOMATO, SUNFLOWER, STRAWBERRY, PUMPKIN, CORN, PEPPER, CARROT, RADISH, WHEAT
 }
 
 data class Crop(
@@ -19,7 +19,10 @@ data class Crop(
             Crop(CropType.STRAWBERRY, "Клубника", 100, 300, 240),
             Crop(CropType.PUMPKIN, "Тыква", 300, 900, 360),
             Crop(CropType.CORN, "Кукуруза", 80, 240, 200),
-            Crop(CropType.PEPPER, "Перец", 120, 360, 220)
+            Crop(CropType.PEPPER, "Перец", 120, 360, 220),
+            Crop(CropType.CARROT, "Морковь", 30, 90, 130),
+            Crop(CropType.RADISH, "Редиска", 15, 45, 80),
+            Crop(CropType.WHEAT, "Пшеница", 40, 120, 150)
         )
         fun getByType(type: CropType) = all.find { it.type == type }!!
     }
