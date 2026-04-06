@@ -27,18 +27,21 @@ class GardenAdapter(
 
     inner class ViewHolder(private val binding: ItemGardenBedBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(bed: GardenBedData, position: Int) {
-            // Получаем ресурс картинки для растения или показываем заглушку
-            val cropResId = if (bed.cropType != null) {
-                getImageForCrop(bed.cropType)
-            } else {
-                R.drawable.empty_plot // или 0, тогда скроем ImageView
+            // Устанавливаем картинку растения или пустую заглушку
+            val cropResId = when (bed.cropType) {
+                "POTATO" -> R.drawable.potato      // если у вас есть potato.png
+                "TOMATO" -> R.drawable.tomato
+                "SUNFLOWER" -> R.drawable.sunflower
+                "STRAWBERRY" -> R.drawable.strawberry
+                "PUMPKIN" -> R.drawable.pumpkin
+                "CORN" -> R.drawable.corn
+                "PEPPER" -> R.drawable.pepper
+                "CARROT" -> R.drawable.carrot      // морковь
+                "RADISH" -> R.drawable.radish      // редиска
+                "WHEAT" -> R.drawable.wheat        // пшеница
+                else -> R.drawable.empty_plot      // пустая грядка
             }
-            if (cropResId != 0) {
-                binding.ivPlant.setImageResource(cropResId)
-                binding.ivPlant.visibility = android.view.View.VISIBLE
-            } else {
-                binding.ivPlant.visibility = android.view.View.GONE
-            }
+            binding.ivCrop.setImageResource(cropResId)
 
             val progressPercent = (bed.progress * 100).toInt()
             binding.progressBar.progress = progressPercent
@@ -50,23 +53,6 @@ class GardenAdapter(
             }
             binding.btnHarvest.setOnClickListener {
                 onHarvestClick(position)
-            }
-        }
-
-        private fun getImageForCrop(cropTypeStr: String): Int {
-            return when (cropTypeStr) {
-                CropType.POTATO.name -> R.drawable.potato
-                CropType.TOMATO.name -> R.drawable.tomato
-                CropType.SUNFLOWER.name -> R.drawable.sunflower
-                CropType.STRAWBERRY.name -> R.drawable.strawberry
-                CropType.PUMPKIN.name -> R.drawable.pumpkin
-                CropType.CORN.name -> R.drawable.corn
-                CropType.PEPPER.name -> R.drawable.pepper
-                // Новые культуры, если добавите
-                "CARROT" -> R.drawable.carrot
-                "WHEAT" -> R.drawable.wheat
-                "RADISH" -> R.drawable.radish
-                else -> 0
             }
         }
     }
