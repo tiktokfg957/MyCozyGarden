@@ -2,7 +2,7 @@ package com.example.mycozygarden.ui.game
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -32,9 +32,12 @@ class GameActivity : AppCompatActivity() {
             observeData()
             setupListeners()
         } catch (e: Exception) {
-            Toast.makeText(this, "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
+            val errorTextView = TextView(this)
+            errorTextView.text = "Ошибка в игре:\n${e.message}\n\n${e.stackTrace.joinToString("\n")}"
+            errorTextView.setTextColor(0xFFFF0000.toInt())
+            errorTextView.setPadding(32, 32, 32, 32)
+            setContentView(errorTextView)
             e.printStackTrace()
-            finish()
         }
     }
 
@@ -59,7 +62,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnPlant.setOnClickListener {
-            Toast.makeText(this, "Посадка в разработке", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, UpgradesActivity::class.java))
         }
         binding.btnUpgrades.setOnClickListener {
             startActivity(Intent(this, UpgradesActivity::class.java))
@@ -74,7 +77,7 @@ class GameActivity : AppCompatActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
         binding.ivStats.setOnClickListener {
-            Toast.makeText(this, "Статистика в разработке", Toast.LENGTH_SHORT).show()
+            // статистика пока не реализована
         }
     }
 
