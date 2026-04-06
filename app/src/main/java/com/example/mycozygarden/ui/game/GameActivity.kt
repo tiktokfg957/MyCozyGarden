@@ -13,6 +13,7 @@ import com.example.mycozygarden.data.model.CropType
 import com.example.mycozygarden.databinding.ActivityGameBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 data class GardenBedData(
     val index: Int,
@@ -34,6 +35,14 @@ class GameActivity : AppCompatActivity() {
             saveCoins()
         }
 
+    // Статус улучшений
+    private var scarecrowOwned = false
+    private var tractorOwned = false
+    private var autoWaterOwned = false
+
+    private val baseClickPower = 0.05f
+    private fun getClickPower(): Float = if (tractorOwned) baseClickPower + 0.03f else baseClickPower
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
@@ -45,11 +54,19 @@ class GameActivity : AppCompatActivity() {
         prefs = getSharedPreferences("game_data", MODE_PRIVATE)
 
         loadCoins()
+        loadUpgrades()
         loadBeds()
 
         setupRecyclerView()
         startPassiveGrowth()
+        startAutoWater()
         setupListeners()
+    }
+
+    private fun loadUpgrades() {
+        scarecrowOwned = prefs.getBoolean("upgrade_scarecrow", false)
+        tractorOwned = prefs.getBoolean("upgrade_tractor", false)
+        autoWaterOwned = prefs.getBoolean("upgrade_auto_water", false)
     }
 
     private fun setupRecyclerView() {
@@ -62,7 +79,7 @@ class GameActivity : AppCompatActivity() {
                     showPlantDialog(bedIndex)
                 } else {
                     val crop = Crop.getByType(CropType.valueOf(bed.cropType!!))
-                    val increment = 0.05f
+                    val increment = getClickPower()
                     val newProgress = (bed.progress + increment).coerceAtMost(1f)
                     bed.progress = newProgress
                     adapter.notifyItemChanged(bedIndex)
@@ -76,6 +93,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showPlantDialog(bedIndex: Int) {
+        // Сортируем культуры по возрастанию цены
         val sortedCrops = Crop.all.sortedBy { it.priceToPlant }
         val cropNames = sortedCrops.map { "${it.name} (${it.priceToPlant} монет)" }.toTypedArray()
         AlertDialog.Builder(this)
@@ -102,12 +120,16 @@ class GameActivity : AppCompatActivity() {
         val cropType = bed.cropType
         if (cropType != null && bed.progress >= 1f) {
             val crop = Crop.getByType(CropType.valueOf(cropType))
-            coins += crop.baseHarvestValue
+            var reward = crop.baseHarvestValue
+            if (scarecrowOwned) {
+                reward = (reward * 1.2).toInt()
+            }
+            coins += reward
             beds[bedIndex].cropType = null
             beds[bedIndex].progress = 0f
             adapter.notifyItemChanged(bedIndex)
             saveBeds()
-            Toast.makeText(this, "Собрано ${crop.name}! +${crop.baseHarvestValue} монет", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Собрано ${crop.name}! +$reward монет", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -131,6 +153,27 @@ class GameActivity : AppCompatActivity() {
                 if (changed) {
                     adapter.notifyDataSetChanged()
                     saveBeds()
+                }
+            }
+        }
+    }
+
+    private fun startAutoWater() {
+        if (!autoWaterOwned) return
+        lifecycleScope.launch {
+            while (true) {
+                delay(10000L) // каждые 10 секунд
+                val nonFullBeds = beds.filter { it.cropType != null && it.progress < 1f }
+                if (nonFullBeds.isNotEmpty()) {
+                    val randomBed = nonFullBeds.random()
+                    val growth = 0.05f
+                    val newProgress = (randomBed.progress + growth).coerceAtMost(1f)
+                    randomBed.progress = newProgress
+                    saveBeds()
+                    runOnUiThread {
+                        val position = beds.indexOf(randomBed)
+                        adapter.notifyItemChanged(position)
+                    }
                 }
             }
         }
