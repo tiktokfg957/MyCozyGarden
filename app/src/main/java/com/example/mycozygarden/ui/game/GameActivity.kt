@@ -14,16 +14,20 @@ import com.example.mycozygarden.databinding.ActivityGameBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+// Определение класса данных грядки – только здесь, не дублируется
+data class GardenBedData(
+    val index: Int,
+    var cropType: String?,
+    var progress: Float
+)
+
 class GameActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityGameBinding
     private lateinit var adapter: GardenAdapter
     private lateinit var prefs: SharedPreferences
 
-    // Данные грядок (12 штук)
     private val beds = mutableListOf<GardenBedData>()
-
-    // Монеты
     private var coins = 0
         set(value) {
             field = value
@@ -52,15 +56,12 @@ class GameActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         adapter = GardenAdapter(
             beds = beds,
-            onHarvestClick = { bedIndex ->
-                harvestBed(bedIndex)
-            },
+            onHarvestClick = { bedIndex -> harvestBed(bedIndex) },
             onBedClick = { bedIndex ->
                 val bed = beds[bedIndex]
                 if (bed.cropType == null) {
                     showPlantDialog(bedIndex)
                 } else {
-                    // Ускорение роста кликом
                     val crop = Crop.getByType(CropType.valueOf(bed.cropType!!))
                     val increment = 0.05f
                     val newProgress = (bed.progress + increment).coerceAtMost(1f)
@@ -113,7 +114,7 @@ class GameActivity : AppCompatActivity() {
     private fun startPassiveGrowth() {
         lifecycleScope.launch {
             while (true) {
-                delay(1000L) // каждую секунду
+                delay(1000L)
                 var changed = false
                 for (i in beds.indices) {
                     val bed = beds[i]
@@ -141,16 +142,14 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    // Сохранение и загрузка монет
     private fun saveCoins() {
         prefs.edit().putInt("coins", coins).apply()
     }
 
     private fun loadCoins() {
-        coins = prefs.getInt("coins", 100) // начальные 100 монет
+        coins = prefs.getInt("coins", 100)
     }
 
-    // Сохранение и загрузка грядок
     private fun saveBeds() {
         val json = beds.joinToString(separator = ";") { "${it.cropType}|${it.progress}" }
         prefs.edit().putString("beds", json).apply()
@@ -159,7 +158,6 @@ class GameActivity : AppCompatActivity() {
     private fun loadBeds() {
         val json = prefs.getString("beds", "")
         if (json.isNullOrEmpty()) {
-            // 12 пустых грядок
             for (i in 0 until 12) {
                 beds.add(GardenBedData(i, null, 0f))
             }
@@ -180,9 +178,3 @@ class GameActivity : AppCompatActivity() {
         return true
     }
 }
-
-data class GardenBedData(
-    val index: Int,
-    var cropType: String?,
-    var progress: Float
-)
