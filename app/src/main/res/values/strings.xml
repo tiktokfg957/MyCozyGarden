@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Мой уютный огород</string>
+    <string name="play">Играть</string>
+    <string name="settings">Настройки</string>
+    <string name="shop">Магазин</string>
+    <string name="exit">Выход</string>
+    <string name="coins">Монеты</string>
+    <string name="gems">Алмазы</string>
+    <string name="harvest">Собрать</string>
+    <string name="plant">Посадить</string>
+    <string name="upgrades">Улучшения</string>
+    <string name="achievements">Достижения</string>
 </resources>
