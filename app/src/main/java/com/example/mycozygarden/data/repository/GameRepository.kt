@@ -30,7 +30,7 @@ class GameRepository(private val db: AppDatabase) {
         val beds = db.gameDao().getAllBeds().first()
         if (beds.isEmpty()) {
             for (i in 0 until 12) {
-                db.gameDao().insertBed(GardenBed(index = i, cropType = null, progress = 0f, lastUpdateTime = System.currentTimeMillis()))
+                db.gameDao().insertBed(GardenBed(bedIndex = i, cropType = null, progress = 0f, lastUpdateTime = System.currentTimeMillis()))
             }
         }
         val upgrades = db.gameDao().getAllUpgrades().first()
