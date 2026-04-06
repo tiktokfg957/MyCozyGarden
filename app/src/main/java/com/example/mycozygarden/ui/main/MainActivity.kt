@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.mycozygarden.databinding.ActivityMainBinding
 import com.example.mycozygarden.ui.game.GameActivity
 import com.example.mycozygarden.ui.settings.SettingsActivity
-import com.example.mycozygarden.ui.shop.ShopActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
         binding.btnShop.setOnClickListener {
-            startActivity(Intent(this, ShopActivity::class.java))
+            Toast.makeText(this, "Магазин открывается в игре", Toast.LENGTH_SHORT).show()
         }
         binding.btnExit.setOnClickListener {
             finishAffinity()
