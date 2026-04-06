@@ -12,7 +12,7 @@ interface GameDao {
     @Update
     suspend fun updateGameState(state: GameState)
 
-    @Query("SELECT * FROM garden_beds ORDER BY index ASC")
+    @Query("SELECT * FROM garden_beds ORDER BY bedIndex ASC")
     fun getAllBeds(): Flow<List<GardenBed>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
