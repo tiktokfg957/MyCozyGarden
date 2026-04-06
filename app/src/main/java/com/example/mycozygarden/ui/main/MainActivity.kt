@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 finishAffinity()
             }
         } catch (e: Exception) {
-            Toast.makeText(this, "Ошибка при запуске: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
             e.printStackTrace()
         }
     }
