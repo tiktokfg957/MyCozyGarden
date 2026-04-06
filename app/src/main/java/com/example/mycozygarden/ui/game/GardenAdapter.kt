@@ -27,19 +27,19 @@ class GardenAdapter(
 
     inner class ViewHolder(private val binding: ItemGardenBedBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(bed: GardenBedData, position: Int) {
-            // Устанавливаем картинку растения или пустую заглушку
+            // Определяем ресурс картинки на основе типа культуры
             val cropResId = when (bed.cropType) {
-                "POTATO" -> R.drawable.potato      // если у вас есть potato.png
+                "POTATO" -> R.drawable.empty_plot   // пока нет картинки
                 "TOMATO" -> R.drawable.tomato
-                "SUNFLOWER" -> R.drawable.sunflower
-                "STRAWBERRY" -> R.drawable.strawberry
+                "SUNFLOWER" -> R.drawable.empty_plot
+                "STRAWBERRY" -> R.drawable.empty_plot
                 "PUMPKIN" -> R.drawable.pumpkin
                 "CORN" -> R.drawable.corn
-                "PEPPER" -> R.drawable.pepper
-                "CARROT" -> R.drawable.carrot      // морковь
-                "RADISH" -> R.drawable.radish      // редиска
-                "WHEAT" -> R.drawable.wheat        // пшеница
-                else -> R.drawable.empty_plot      // пустая грядка
+                "PEPPER" -> R.drawable.empty_plot
+                "CARROT" -> R.drawable.carrot
+                "RADISH" -> R.drawable.radish
+                "WHEAT" -> R.drawable.wheat
+                else -> R.drawable.empty_plot
             }
             binding.ivCrop.setImageResource(cropResId)
 
