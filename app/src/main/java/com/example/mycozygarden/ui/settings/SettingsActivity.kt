@@ -22,10 +22,6 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Настройки"
-
         prefs = getSharedPreferences("game_settings", MODE_PRIVATE)
 
         binding.sbMusic.progress = prefs.getInt("music_volume", 50)
@@ -65,10 +61,5 @@ class SettingsActivity : AppCompatActivity() {
                 .setNegativeButton("Нет", null)
                 .show()
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 }
