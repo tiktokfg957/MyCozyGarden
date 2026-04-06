@@ -4,19 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp"
-    android:background="#8B5A2B"
+    android:background="@drawable/empty_plot"
     android:layout_margin="4dp"
     android:clickable="true"
     android:focusable="true">
 
-    <TextView
-        android:id="@+id/tvCropName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:textColor="@android:color/white"
+    <ImageView
+        android:id="@+id/ivPlant"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="center"
-        android:text="Пусто" />
+        android:scaleType="fitCenter" />
 
     <ProgressBar
         android:id="@+id/progressBar"
