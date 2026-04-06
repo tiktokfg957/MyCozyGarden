@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="#8B5A2B"
+    android:layout_margin="4dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/tvCropName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center"
+        android:text="Пусто" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:progressTint="#4CAF50"
+        android:max="100"
+        android:layout_marginTop="4dp" />
+
+    <Button
+        android:id="@+id/btnHarvest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Собрать"
+        android:textSize="10sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="4dp"
+        android:visibility="gone" />
+
+</LinearLayout>
