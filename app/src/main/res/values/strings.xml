@@ -5,17 +5,4 @@
     <string name="settings">Настройки</string>
     <string name="shop">Магазин</string>
     <string name="exit">Выход</string>
-    <string name="coins">Монеты</string>
-    <string name="gems">Алмазы</string>
-    <string name="harvest">Собрать</string>
-    <string name="plant">Посадить</string>
-    <string name="upgrades">Улучшения</string>
-    <string name="achievements">Достижения</string>
-    <string name="potato">Картофель</string>
-    <string name="tomato">Помидор</string>
-    <string name="sunflower">Подсолнух</string>
-    <string name="strawberry">Клубника</string>
-    <string name="pumpkin">Тыква</string>
-    <string name="corn">Кукуруза</string>
-    <string name="pepper">Перец</string>
 </resources>
