@@ -3,23 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#5D4037">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#3E2723"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    android:padding="16dp">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Громкость музыки"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="16dp" />
-
+        android:text="Музыка"
+        android:textSize="16sp" />
     <SeekBar
         android:id="@+id/sbMusic"
         android:layout_width="match_parent"
@@ -27,12 +17,11 @@
         android:max="100" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Громкость звуков"
-        android:textColor="@android:color/white"
+        android:text="Звуки"
+        android:textSize="16sp"
         android:layout_marginTop="16dp" />
-
     <SeekBar
         android:id="@+id/sbSound"
         android:layout_width="match_parent"
@@ -41,10 +30,9 @@
 
     <CheckBox
         android:id="@+id/cbVibration"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Вибрация при сборе урожая"
-        android:textColor="@android:color/white"
+        android:text="Вибрация при сборе"
         android:layout_marginTop="16dp" />
 
     <Button
@@ -53,6 +41,6 @@
         android:layout_height="wrap_content"
         android:text="Сбросить прогресс"
         android:layout_marginTop="32dp"
-        android:backgroundTint="#E74C3C" />
+        android:backgroundTint="#E53935" />
 
 </LinearLayout>
