@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.mycozygarden.data.model.Achievement
 import com.example.mycozygarden.data.model.Crop
 import com.example.mycozygarden.data.model.CropType
 import com.example.mycozygarden.data.model.GameState
@@ -45,7 +44,8 @@ class GameViewModel(private val repository: GameRepository) : ViewModel() {
     private suspend fun updateAllBeds(deltaSec: Float) {
         val currentState = gameState.value ?: return
         val currentBeds = beds.value ?: return
-        val hasAutoClicker = repository.getAllUpgrades().asLiveData().value?.any { it.effect == "auto_clicker" && it.owned } ?: false
+        val upgrades = repository.getAllUpgrades().asLiveData().value ?: emptyList()
+        val hasAutoClicker = upgrades.any { it.effect == "auto_clicker" && it.owned }
 
         for (bed in currentBeds) {
             if (bed.cropType != null && bed.progress < 1f) {
@@ -65,7 +65,8 @@ class GameViewModel(private val repository: GameRepository) : ViewModel() {
     fun onBedClick(bed: GardenBed) {
         viewModelScope.launch {
             val state = gameState.value ?: return@launch
-            val hasTractor = repository.getAllUpgrades().asLiveData().value?.any { it.effect == "tractor" && it.owned } ?: false
+            val upgrades = repository.getAllUpgrades().asLiveData().value ?: emptyList()
+            val hasTractor = upgrades.any { it.effect == "tractor" && it.owned }
             val clickPower = if (hasTractor) 0.03f else 0.02f
             if (bed.cropType != null && bed.progress < 1f) {
                 val newProgress = min(bed.progress + clickPower, 1f)
@@ -73,6 +74,7 @@ class GameViewModel(private val repository: GameRepository) : ViewModel() {
                 repository.updateBed(bed)
                 state.totalClicks++
                 repository.updateGameState(state)
+                checkClickAchievements(state)
             }
         }
     }
@@ -83,7 +85,8 @@ class GameViewModel(private val repository: GameRepository) : ViewModel() {
             if (bed.cropType == null || bed.progress < 1f) return@launch
 
             val crop = Crop.getByType(CropType.valueOf(bed.cropType!!))
-            val hasScarecrow = repository.getAllUpgrades().asLiveData().value?.any { it.effect == "scarecrow" && it.owned } ?: false
+            val upgrades = repository.getAllUpgrades().asLiveData().value ?: emptyList()
+            val hasScarecrow = upgrades.any { it.effect == "scarecrow" && it.owned }
             val multiplier = if (hasScarecrow) 1.2f else 1f
             val reward = (crop.baseHarvestValue * multiplier * state.prestigeBonus).toLong()
             state.coins += reward
@@ -93,23 +96,35 @@ class GameViewModel(private val repository: GameRepository) : ViewModel() {
             repository.updateBed(bed)
             repository.updateGameState(state)
 
-            checkAchievements(state)
+            checkHarvestAchievements(state, crop.type)
         }
     }
 
-    private suspend fun checkAchievements(state: GameState) {
+    private suspend fun checkHarvestAchievements(state: GameState, cropType: CropType) {
         val achievements = repository.getAllAchievements().asLiveData().value ?: return
         for (ach in achievements) {
             if (!ach.completed) {
                 when (ach.requirementType) {
                     "total_coins" -> if (state.totalHarvestedCoins >= ach.requirementValue) completeAchievement(ach, state)
-                    "clicks" -> if (state.totalClicks >= ach.requirementValue) completeAchievement(ach, state)
+                    "crop_${cropType.name.lowercase()}" -> {
+                        // Здесь нужно вести подсчёт для каждой культуры, пока упростим
+                        if (ach.requirementValue <= 1) completeAchievement(ach, state)
+                    }
                 }
             }
         }
     }
 
-    private suspend fun completeAchievement(ach: Achievement, state: GameState) {
+    private suspend fun checkClickAchievements(state: GameState) {
+        val achievements = repository.getAllAchievements().asLiveData().value ?: return
+        for (ach in achievements) {
+            if (!ach.completed && ach.requirementType == "clicks" && state.totalClicks >= ach.requirementValue) {
+                completeAchievement(ach, state)
+            }
+        }
+    }
+
+    private suspend fun completeAchievement(ach: com.example.mycozygarden.data.model.Achievement, state: GameState) {
         ach.completed = true
         state.coins += ach.rewardCoins
         state.gems += ach.rewardGems
